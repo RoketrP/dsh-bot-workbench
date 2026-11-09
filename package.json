@@ -1,6 +1,6 @@
 {
   "name": "dsh-bot-workbench",
-  "version": "0.1.0-alpha.2",
+  "version": "0.1.0-rc.1",
   "description": "Personal Bots with task acceptance, explicit handoffs and interrupted-run reconciliation for DeepSeek Harness.",
   "type": "module",
   "license": "MIT",
@@ -21,7 +21,9 @@
     "THIRD_PARTY_NOTICES.md",
     "screenshots.json",
     "assets",
-    "docs"
+    "docs",
+    "CHANGELOG.md",
+    "SECURITY.md"
   ],
   "dsh": {
     "bundle": {
@@ -34,7 +36,8 @@
         "@deepseek-ai/dsh-api-remotes",
         "@deepseek-ai/dsh-client-locale",
         "@deepseek-ai/dsh-client-ui-layout",
-        "@deepseek-ai/dsh-client-ui-sidebar"
+        "@deepseek-ai/dsh-client-ui-sidebar",
+        "@deepseek-ai/dsh-client-ui-workspace"
       ]
     }
   },
@@ -47,53 +50,60 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "check": "npm run typecheck && npm test && npm run build",
-    "pack:plugin": "npm run build && npm pack --pack-destination dist --ignore-scripts"
+    "pack:plugin": "npm run build && mkdir -p dist && npm pack --pack-destination dist --ignore-scripts",
+    "test:native": "node tests/run-native.mjs",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx,css}\" \"tests/*.{ts,mjs}\" \"scripts/*.mjs\""
   },
   "peerDependencies": {
     "@deepseek-ai/cordis": "4.1.0",
-    "@deepseek-ai/dsh-storage-domain": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-typert-protocol": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
+    "@deepseek-ai/cordis-plugin-include": "1.1.0",
     "@deepseek-ai/dsh-agent-preset-registry": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.1",
     "@deepseek-ai/dsh-schedule": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-session": "0.2.2-rc.1"
+    "@deepseek-ai/dsh-session": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-storage-domain": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-typert-protocol": "0.2.2-rc.1",
+    "@deepseek-ai/schemastery": "3.19.0"
   },
   "dependencies": {
-    "@deepseek-ai/schemastery": "3.19.0",
-    "zod": "4.4.3",
-    "@deepseek-ai/cordis-plugin-include": "1.1.0",
-    "js-yaml": "4.1.1"
+    "js-yaml": "4.3.2",
+    "zod": "4.6.7"
   },
   "devDependencies": {
     "@deepseek-ai/cordis": "4.1.0",
+    "@deepseek-ai/cordis-plugin-include": "1.1.0",
     "@deepseek-ai/dsh-agent": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-api-session-controller": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-api-remotes": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-agent-preset-registry": "0.2.2-rc.1",
     "@deepseek-ai/dsh-api-gateway": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-api-remotes": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-api-session-controller": "0.2.2-rc.1",
     "@deepseek-ai/dsh-client-locale": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-renderer": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-client-ui-slots": "0.2.2-rc.1",
     "@deepseek-ai/dsh-client-ui-layout": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-renderer": "0.2.2-rc.1",
     "@deepseek-ai/dsh-client-ui-sidebar": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-client-ui-slots": "0.2.2-rc.1",
     "@deepseek-ai/dsh-client-ui-workspace": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
     "@deepseek-ai/dsh-schedule": "0.2.2-rc.1",
     "@deepseek-ai/dsh-session": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-llm": "0.2.2-rc.1",
     "@deepseek-ai/dsh-storage-domain": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.1",
+    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
     "@deepseek-ai/dsh-typert-protocol": "0.2.2-rc.1",
     "@deepseek-ai/dsh-typert-registry": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-tools": "0.2.2-rc.1",
+    "@deepseek-ai/schemastery": "3.19.0",
+    "@types/js-yaml": "4.0.9",
     "@types/node": "24.10.0",
     "@types/react": "18.3.28",
-    "typescript": "5.9.3",
     "esbuild": "0.25.12",
-    "tsx": "4.20.6",
+    "prettier": "3.6.2",
     "react": "18.3.1",
     "react-dom": "18.3.1",
-    "playwright-core": "1.58.2",
-    "@deepseek-ai/dsh-agent-preset-registry": "0.2.2-rc.1",
-    "@deepseek-ai/dsh-system-prompt": "0.2.2-rc.1",
-    "@types/js-yaml": "4.0.9"
+    "tsx": "4.20.6",
+    "typescript": "5.9.3"
+  },
+  "overrides": {
+    "zod": "$zod"
   }
 }

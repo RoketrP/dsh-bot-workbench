@@ -7,3 +7,6 @@ evidence/private/
 *.log
 .DS_Store
 .env*
+work/
+/core
+/core.*

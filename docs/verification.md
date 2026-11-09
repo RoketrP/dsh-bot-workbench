@@ -1,28 +1,60 @@
-# Verification status
+# Verification / 验证矩阵
 
-This file records checks actually completed; planned checks are not passes.
+Evidence is version-specific. A scripted model is not a real DeepSeek model; a passing CI run is not marketplace acceptance.
 
-## Environment observations
+## Completed local checks
 
-- Project-local Node executable: 24.22.1, verified by running it. The default Homebrew Node failed because of a missing shared library; global installation was not changed.
-- Published Harness 0.2.2-rc.1 installed in an isolated development directory; CLI --version returned 0.2.2-rc.1.
-- Harness 0.2.1-rc.5 and original DSH-Bot 0.6.5 installed in another isolated directory. This is dependency installation evidence only.
-- User desktop inspected using Computer Use: About panel displays DeepSeek Harness 0.2.2-rc.1. Existing Bot roster and other plugins were left unchanged.
+| Layer | Version / environment | Result |
+| --- | --- | --- |
+| Typecheck, Host/client build, 19 behavior tests | rc.1 source, Node 24.22.1, macOS | PASS |
+| Clean tarball install in a newly created profile | rc.1 / Harness 0.2.2-rc.1 | PASS |
+| Native Bot, memory, task, approval, review and correction feedback | rc.1 / scripted model | PASS; no real model requests |
+| Private-memory isolation, explicit handoff, editing, paused idempotent import | rc.1 / scripted model | PASS |
+| Native daily schedule with Asia/Shanghai; manual interval delivery | rc.1 / scripted model | PASS |
+| Real native timer after 60 seconds, without a browser | rc.1 / scripted model | PASS; receipt identity matched the new task run |
+| Cold state recovery | rc.1 / native Host | PASS; zero model calls on cold reopen |
+| Graceful shutdown, uninstall, reinstall | rc.1 / native Host | PASS; owned schedule suspended, records retained, owned schedule resumed on reinstall |
+| Forced process loss during an active model stream | rc.1 / native Host | PASS; recovered uncertain, zero model calls on restart |
+| Stop while native session creation is still pending | rc.1 / real native creation with a test gate | PASS; cancelled before task prompt admission, no extra model call |
+| Web task creation, evidence checks and acceptance | alpha.2–alpha.4 / Chrome / Harness 0.2.2-rc.1 | PASS |
+| Web memory add/edit, Escape focus return, 390×844 layout | alpha.4 / Chrome | PASS |
+| Desktop install, enable, Bot/memory/task UI | alpha.3 / user's Harness 0.2.2-rc.1 | PASS |
+| Real DeepSeek model reads two local sample files and submits evidence | alpha.3 / desktop / DeepSeek-V4.1-Flash High | PASS; 4 native steps, human-reviewed sample result |
 
-## Completed development checks
+The real-model test used non-sensitive artificial source files in a dedicated directory. References and the 10:00–11:00 intersection were checked against those files. The separate conversational answer included an inaccurate “no overlap” phrase; the submitted evidence and intersection were correct. Model correctness is not guaranteed by this workflow.
 
-- Typecheck and Host/client bundle build passed.
-- 12 core behavior tests passed: optimistic edits, failed writes, concurrency, result ownership, acceptance evidence, bounded history and interruption recovery.
-- Real 0.2.2-rc.1 Host with a scripted model passed Bot creation, confirmed-memory injection, task execution, native approval and separated acceptance. Real model requests: 0.
-- Cold Host reopened persistent Bot/task/memory state with 0 model requests.
-- Computer Use in isolated Chrome verified task creation, execution, evidence checkboxes and human acceptance. A missing Remote dependency lookup was found, fixed, rebuilt and retested. Chrome translation altered some visible text; native desktop validation remains separate.
+Native scripted-model receipts are summarized in [native-test-report.json](native-test-report.json). Screenshots show rc.1 assistant-first UI with isolated scripted examples, not the user's private data or real-model session. Native desktop screenshot capture returned a minimized-window thumbnail; no such thumbnail is presented as a valid full-window screenshot.
 
-## Pending release gates
+| Assistant-first home, message delivery into native conversation, memory search/edit, task review drawer, daily-plan creation/removal and 390×844 layout | rc.1 / Chrome / scripted fixture | PASS |
 
-- Full execution with a scripted model; approval, schedule, restart and uninstall.
-- Native desktop installation and visual task flow.
-- Real DeepSeek model task.
-- Release archive clean-install and upgrade verification.
-- Public repository, release and marketplace submission.
+## Release closeout still to record
 
-No real-model or marketplace completion is claimed.
+- Final rc.1 desktop upgrade, including a real-model sample and a temporary native plan.
+- Public release asset download/integrity and GitHub CI result.
+- Marketplace application status and the one-day repository age gate.
+
+Linux and Windows have not been validated. No external sending, purchasing, deployment or real-recipient action was exercised.
+
+## Reproduce the native package test
+
+Use Node ≥24.9 and the exact Host version. The default Node installation on the development Mac had a missing shared library; a project-local verified Node 24.22.1 was used, without changing the global installation.
+
+```sh
+npm ci --ignore-scripts
+npm run check
+npm run format:check
+mkdir -p dist .runtime/harness
+npm run pack:plugin
+npm install --prefix .runtime/harness --ignore-scripts @deepseek-ai/dsh@0.2.2-rc.1
+DSH_TEST_CLI="$PWD/.runtime/harness/node_modules/.bin/dsh" npm run test:native
+```
+
+The runner creates its own DSH_HOME, instructions directory, workspace and profile under .runtime/. It installs the actual tarball through the native plugin CLI, uses only a scripted LLM adapter, observes native approval events, exercises a real timer, uninstalls/reinstalls, then kills only its own Host child for recovery verification. Cold restarts must issue zero model calls. Test logs may contain local authentication links, so .runtime/ stays untracked and only a sanitized result summary may be published.
+
+## Dependency check boundaries
+
+Direct js-yaml and Zod versions were updated after registry advisories were found. The client bundles its own patched Zod runtime; its license is included. The development graph unifies Zod types through a local override to avoid cross-version structural-type expansion. This does not replace the Host's own Zod or modify the user's other plugins.
+
+[JS-YAML advisory](https://github.com/advisories/GHSA-2883-xcg3-v3hh) · [Zod advisory](https://github.com/advisories/GHSA-mrhx-c7xc-m3w5)
+
+A package audit covers the resolved development/runtime graph at its reported date; it is not a security audit of the user's Host, other plugins, model output or external services.

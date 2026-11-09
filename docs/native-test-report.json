@@ -1,0 +1,43 @@
+{
+  "status": "PASS",
+  "version": "0.1.0-rc.1",
+  "hostVersion": "0.2.2-rc.1",
+  "realModelRequests": 0,
+  "phases": {
+    "hot": {
+      "status": "PASS",
+      "phase": "hot",
+      "hostVersion": "0.2.2-rc.1",
+      "approvalCount": 4,
+      "calls": 11,
+      "realModelRequests": 0,
+      "chatEntryDeduplicated": true,
+      "memoryInjection": true,
+      "acceptanceSeparated": true,
+      "nativeSchedule": true,
+      "explicitDailyTimeZone": true,
+      "pauseResume": true,
+      "privateMemoryIsolation": true,
+      "explicitHandoff": true,
+      "metadataAndMemoryManagement": true,
+      "pausedIdempotentImport": true,
+      "reviewFeedback": true,
+      "stoppedBeforeAdmission": true
+    },
+    "cold": {
+      "status": "PASS",
+      "phase": "cold",
+      "tasks": 3,
+      "bots": 3,
+      "calls": 0,
+      "realModelRequests": 0
+    },
+    "headlessTimerDelivery": true,
+    "gracefulScheduleSuspension": true,
+    "uninstallPreservedRecords": true,
+    "reinstallResumedOwnedSchedule": true,
+    "forcedLossRecoveredUncertain": true,
+    "stoppedBeforeAdmission": true
+  },
+  "timestamp": "2026-11-09T14:19:39.632Z"
+}
