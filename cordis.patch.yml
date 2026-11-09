@@ -1,0 +1,9 @@
+- insert:
+    - id: dsh-bot-workbench
+      name: dsh-bot-workbench
+      config:
+        maxConcurrent: 2
+        maxSteps: 40
+        timeoutSeconds: 600
+        maxTasks: 500
+        maxRunsPerTask: 50
