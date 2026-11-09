@@ -19,7 +19,7 @@ DeepSeek Harness 的社区扩展：给个人 Bot 配置长期职责和私有记�
 - 中断运行停在“需要核对”，不自动重放不确定动作。
 - 导出完整记录，或预览后导入为暂停副本。导入不恢复会话、计划、运行或验收权限。
 
-它与 [DSH-Bot](https://github.com/MJ-CJM/DSH-Bot) 等现有项目有基础功能重叠。本项目的重点是**证据验收、明确交接、中断核对**；不提供多 Bot 自主群聊或外部 IM。实现选择与归属见[设计决策](docs/decisions.md)。
+它与 [DSH-Bot](https://github.com/MJ-CJM/DSH-Bot) 的个人 Bot 功能、[goal-acceptance](https://github.com/cckyros/goal-acceptance) 的验收功能存在重叠。本项目将**Bot 私有记忆、证据验收、明确交接、原生计划领取和中断核对**组成一个原生界面工作流；不提供多 Bot 自主群聊或外部 IM。比较范围、实现选择与归属见[设计决策](docs/decisions.md)。
 
 ## 安装
 

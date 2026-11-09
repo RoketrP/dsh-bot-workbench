@@ -20,18 +20,24 @@ Evidence is version-specific. A scripted model is not a real DeepSeek model; a p
 | Web memory add/edit, Escape focus return, 390×844 layout | alpha.4 / Chrome | PASS |
 | Desktop install, enable, Bot/memory/task UI | alpha.3 / user's Harness 0.2.2-rc.1 | PASS |
 | Real DeepSeek model reads two local sample files and submits evidence | alpha.3 / desktop / DeepSeek-V4.1-Flash High | PASS; 4 native steps, human-reviewed sample result |
-
 | Assistant-first home, message delivery into native conversation, memory search/edit, task review drawer, daily-plan creation/removal and 390×844 layout | rc.1 / Chrome / scripted fixture | PASS |
+| Desktop alpha.3 → rc.1 install and enable | user's Harness 0.2.2-rc.1 | PASS; existing Bot, confirmed memory and accepted sample retained |
+| New home composer → native main conversation | rc.1 / desktop / DeepSeek-V4.1-Flash High | PASS; reply follows retained format preference, one native step |
+| Native 60-second plan → real model → evidence submission | rc.1 / desktop / DeepSeek-V4.1-Flash High | PASS; timer delivered at 2026-11-09 22:44:15 Asia/Shanghai, 5 native steps, submitted at 22:44:26 |
+| Review and temporary-plan removal | rc.1 / desktop | PASS; checked sample file lines 3–4, recorded test-only acceptance, plans page empty |
+| GitHub macOS check and full native package integration | fad4d24 / Node 24.22.1 | [PASS](https://github.com/RoketrP/dsh-bot-workbench/actions/runs/42635663683) |
 
 The real-model test used non-sensitive artificial source files in a dedicated directory. References and the 10:00–11:00 intersection were checked against those files. The separate conversational answer included an inaccurate “no overlap” phrase; the submitted evidence and intersection were correct. Model correctness is not guaranteed by this workflow.
 
-Native scripted-model receipts are summarized in [native-test-report.json](native-test-report.json). Screenshots show rc.1 assistant-first UI with isolated scripted examples, not the user's private data or real-model session. Native desktop screenshot capture returned a minimized-window thumbnail; no such thumbnail is presented as a valid full-window screenshot.
+Native scripted-model receipts are summarized in [native-test-report.json](native-test-report.json). The rc.1 desktop scheduled result correctly cited source-a.md:3 (09:00–11:00), source-b.md:3 (10:00–12:00), and their shared Asia/Shanghai time zone. The intersection was checked as 10:00–11:00. This is an artificial local integration sample, not a benchmark of model reliability. Its temporary plan was removed before closing the verification.
 
-## Release closeout still to record
+The installed rc.1 Host/client JavaScript and bundle patch matched the local release build byte-for-byte. The final tarball refreshes documentation and screenshot assets; it is not the identical archive originally installed for desktop verification. Screenshots show rc.1 assistant-first UI with isolated scripted examples, not the user's private data or real-model session. Native screenshot capture still returned a minimized-window thumbnail after successful accessibility-based actions; no such thumbnail is presented as a valid full-window screenshot.
 
-- Final rc.1 desktop upgrade, including a real-model sample and a temporary native plan.
-- Public release asset download/integrity and GitHub CI result.
-- Marketplace application status and the one-day repository age gate.
+## Release and marketplace status
+
+The [rc.1 release](https://github.com/RoketrP/dsh-bot-workbench/releases/tag/v0.1.0-rc.1) provides the prebuilt tarball and SHA256SUMS.txt. Release-asset download/integrity is recorded separately from source and native test results in its release notes.
+
+Marketplace application is not yet submitted. The repository was created at 2026-11-09T13:08:39Z, so the earliest time satisfying the current one-day age rule is 2026-11-10 21:08:39 Asia/Shanghai. The topic and installable bundle are present; submission materials are prepared separately. Submission, CI, merge and storefront visibility remain separate outcomes.
 
 Linux and Windows have not been validated. No external sending, purchasing, deployment or real-recipient action was exercised.
 

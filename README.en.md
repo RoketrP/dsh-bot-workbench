@@ -26,7 +26,7 @@ Create a Bot with an existing workspace. Leave model references blank to follow 
 
 The Host must remain running. Private memory and workspaces are not security boundaries. Workbench tasks serialize per Bot and resolved workspace; ordinary conversations and other plugins are outside this mutex. Default task limits: two concurrent tasks, 40 steps and 600 seconds. Token counts are Host-reported usage, not bills or hard spending limits. A prior result must be reviewed or reconciled before another scheduled execution is claimed.
 
-[DSH-Bot](https://github.com/MJ-CJM/DSH-Bot) and other projects cover overlapping personal-Bot features. This project focuses on acceptance, handoff and reconciliation; it does not implement autonomous group chat or external messaging. See [decisions](docs/decisions.md), [verification](docs/verification.md), [operations and data](docs/operations.md), [changelog](CHANGELOG.md) and [security](SECURITY.md). Scripted-model, real-model, browser, desktop and package-install evidence are reported separately.
+[DSH-Bot](https://github.com/MJ-CJM/DSH-Bot) covers overlapping personal-Bot features, and [goal-acceptance](https://github.com/cckyros/goal-acceptance) covers overlapping acceptance features. This project combines Bot-private memory, evidence review, explicit handoff, native schedule receipt binding and interrupted-run reconciliation in one native UI workflow. It does not implement autonomous group chat or external messaging. See [decisions](docs/decisions.md), [verification](docs/verification.md), [operations and data](docs/operations.md), [changelog](CHANGELOG.md) and [security](SECURITY.md). Scripted-model, real-model, browser, desktop and package-install evidence are reported separately.
 
 ## Develop
 
