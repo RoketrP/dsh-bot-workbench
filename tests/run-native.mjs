@@ -33,7 +33,11 @@ const env = {
   ...process.env,
   DSH_HOME: home,
   DSH_AGENTS_HOME: join(dir, "instructions"),
-  PATH: dirname(process.execPath) + ":" + process.env.PATH,
+  PATH: [
+    dirname(process.execPath),
+    dirname(resolve(process.env.DSH_TEST_CLI)),
+    process.env.PATH,
+  ].join(":"),
 };
 let current;
 function child(args, label) {
@@ -55,8 +59,27 @@ async function command(args, label) {
   const c = child(args, label),
     r = await c.done;
   await c.save();
-  if (r.code !== 0)
-    throw new Error(`${label} failed; inspect the private test log.`);
+  if (r.code !== 0) {
+    // Package-operation logs are produced before the Host starts. Never emit Host logs/auth URLs.
+    const log = await readFile(join(dir, label + ".log"), "utf8");
+    const safe = log
+      .split("\n")
+      .filter(
+        (line) =>
+          !/(?:password|secret|authorization|credential|bearer|token=|auth=)/i.test(
+            line,
+          ),
+      )
+      .slice(-24)
+      .map((line) =>
+        line.replace(/https?:\/\/[^\s/@]+:[^\s/@]+@/g, "https://[redacted]@"),
+      )
+      .join("\n");
+    console.error(safe);
+    throw new Error(
+      `${label} failed (${r.code}); inspect the private test log.`,
+    );
+  }
 }
 const delay = (ms) => new Promise((r) => setTimeout(r, ms));
 async function stop(signal = "SIGINT") {
@@ -64,7 +87,14 @@ async function stop(signal = "SIGINT") {
   const c = current;
   current = undefined;
   c.p.kill(signal);
-  const r = await Promise.race([c.done, delay(15000).then(() => null)]);
+  let timer;
+  const r = await Promise.race([
+    c.done,
+    new Promise((resolve) => {
+      timer = setTimeout(() => resolve(null), 15000);
+    }),
+  ]);
+  clearTimeout(timer);
   await c.save();
   if (!r) {
     c.p.kill("SIGKILL");

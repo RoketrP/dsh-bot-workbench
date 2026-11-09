@@ -21,11 +21,11 @@ Evidence is version-specific. A scripted model is not a real DeepSeek model; a p
 | Desktop install, enable, Bot/memory/task UI | alpha.3 / user's Harness 0.2.2-rc.1 | PASS |
 | Real DeepSeek model reads two local sample files and submits evidence | alpha.3 / desktop / DeepSeek-V4.1-Flash High | PASS; 4 native steps, human-reviewed sample result |
 
+| Assistant-first home, message delivery into native conversation, memory search/edit, task review drawer, daily-plan creation/removal and 390×844 layout | rc.1 / Chrome / scripted fixture | PASS |
+
 The real-model test used non-sensitive artificial source files in a dedicated directory. References and the 10:00–11:00 intersection were checked against those files. The separate conversational answer included an inaccurate “no overlap” phrase; the submitted evidence and intersection were correct. Model correctness is not guaranteed by this workflow.
 
 Native scripted-model receipts are summarized in [native-test-report.json](native-test-report.json). Screenshots show rc.1 assistant-first UI with isolated scripted examples, not the user's private data or real-model session. Native desktop screenshot capture returned a minimized-window thumbnail; no such thumbnail is presented as a valid full-window screenshot.
-
-| Assistant-first home, message delivery into native conversation, memory search/edit, task review drawer, daily-plan creation/removal and 390×844 layout | rc.1 / Chrome / scripted fixture | PASS |
 
 ## Release closeout still to record
 
@@ -45,7 +45,7 @@ npm run check
 npm run format:check
 mkdir -p dist .runtime/harness
 npm run pack:plugin
-npm install --prefix .runtime/harness --ignore-scripts @deepseek-ai/dsh@0.2.2-rc.1
+npm install --prefix .runtime/harness --ignore-scripts @deepseek-ai/dsh@0.2.2-rc.1 pnpm@11.22.0
 DSH_TEST_CLI="$PWD/.runtime/harness/node_modules/.bin/dsh" npm run test:native
 ```
 

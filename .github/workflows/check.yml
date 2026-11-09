@@ -18,7 +18,7 @@ jobs:
       - run: npm run check
       - run: npm run format:check
       - run: mkdir -p dist && npm run pack:plugin
-      - run: npm install --prefix .runtime/harness --ignore-scripts @deepseek-ai/dsh@0.2.2-rc.1
+      - run: npm install --prefix .runtime/harness --ignore-scripts @deepseek-ai/dsh@0.2.2-rc.1 pnpm@11.22.0
       - run: npm run test:native
         env:
           DSH_TEST_CLI: ${{ github.workspace }}/.runtime/harness/node_modules/.bin/dsh
